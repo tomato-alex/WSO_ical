@@ -1,15 +1,18 @@
-from datetime import datetime
+from datetime import datetime, timedelta
 import requests
 from bs4 import BeautifulSoup
 from icalendar import Calendar, Event, vCalAddress, vText
+import os
+from pathlib import Path
 
 
-class Event:
+class OperaEvent:
     # constructor
-    def __init__(self, name, start, end):
+    def __init__(self, name, start, end, date):
         self.name = name
         self.start = start
         self.end = end
+        self.date = date
 
     # getters
     def getName(self):
@@ -20,6 +23,9 @@ class Event:
 
     def getEnd(self):
         return self.end
+
+    def getDate(self):
+        return self.date
 
 
 def transform_date(_input):
@@ -99,15 +105,43 @@ def fetch_perf(_link):
                 continue
             start_h = data.find("span", itemprop="startDate")
             end_h = data.find("span", itemprop="endDate")
+            date_format = "%Y%m%d"
             # format time and date to datetime format
-            start_time = datetime.fromisoformat(start_h.text).strftime(
-                "%Y-%m-%d %H:%M:%S"
-            )
-            end_time = datetime.fromisoformat(end_h.text).strftime("%Y-%m-%d %H:%M:%S")
-
-            events.append(Event(name.text, start_time, end_time))
+            start_time = datetime.fromisoformat(start_h.text) - timedelta(
+                hours=1.5
+            )  # .strftime(date_format)
+            end_time = datetime.fromisoformat(end_h.text)  # .strftime(date_format)
+            date = datetime.fromisoformat(start_h.text).strftime(date_format)
+            events.append(OperaEvent(name.text, start_time, end_time, date))
 
     return events
+
+
+def create_event(event_):
+    cal = Calendar()
+    cal.add("attendee", "MAILTO:alex.petrov16@gmail.com")
+
+    event = Event()
+    event.add("summary", "Work")
+    event.add("dtstart", event_.getStart())
+    event.add("dtend", event_.getEnd())
+    # event.add("dtstamp", datetime(2022, 10, 24, 0, 10, 0, tzinfo=pytz.utc))
+    cal.add_component(event)
+    # print(cal.to_ical())
+    directory = str(Path(__file__).parent.parent) + "/ical/"
+    print("ics file will be generated at ", directory)
+    f = open(
+        os.path.join(
+            directory,
+            event_.getDate()
+            + "_"
+            + event_.getName().replace(" ", "_").replace(",", "_")
+            + ".ics",
+        ),
+        "wb",
+    )
+    f.write(cal.to_ical())
+    f.close()
 
 
 if __name__ == "__main__":
@@ -115,7 +149,9 @@ if __name__ == "__main__":
     monthInput = input("Select a month: ")
     monthInput = transform_date(monthInput)
     print(link + monthInput)
-    events = fetch_perf(link + monthInput)
-    for event in events:
+    events_list = fetch_perf(link + monthInput)
+    for event in events_list:
         print(event.getName(), event.getStart(), event.getEnd())
+        create_event(event)
+
     # print(event_elements[0])
