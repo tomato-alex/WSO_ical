@@ -1,0 +1,33 @@
+# Python 101
+https://www.w3schools.com/python/default.asp
+
+# Python classes
+https://realpython.com/python3-object-oriented-programming/
+
+# Python substring
+https://stackoverflow.com/questions/3437059/does-python-have-a-string-contains-substring-method
+
+# Python ternary if (section shorthand ifelse)
+https://www.w3schools.com/python/python_conditions.asp
+
+# Python BeautifulSoup
+https://stackoverflow.com/questions/13853025/is-there-a-way-in-beautiful-soup-to-count-the-number-of-tags-in-a-html-page
+https://realpython.com/beautiful-soup-web-scraper-python/
+
+# Python Input
+https://www.w3schools.com/python/ref_func_input.asp
+
+# Python remove empty lines
+https://www.adamsmith.haus/python/answers/how-to-remove-empty-lines-from-a-string-in-python#:~:text=Use%20the%20list%20comprehension%20syntax,any%20empty%20lines%20from%20lines%20.
+
+# Python datetime
+https://stackoverflow.com/questions/2380013/converting-date-time-in-yyyymmdd-hhmmss-format-to-python-datetime
+https://stackoverflow.com/questions/59744589/how-can-i-convert-the-string-2020-01-06t000000-000z-into-a-datetime-object
+
+# Python ics
+https://www.tutorialsbuddy.com/create-ics-calendar-file-in-python
+https://icalendar.readthedocs.io/en/latest/usage.html
+
+# Python write file
+https://www.w3schools.com/python/python_file_write.asp
+https://badcodernocookie.com/typeerror-write-argument-must-be-str-not-bytes/

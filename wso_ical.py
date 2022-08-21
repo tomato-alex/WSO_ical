@@ -125,17 +125,20 @@ def create_event(event_):
     event.add("summary", "Work")
     event.add("dtstart", event_.getStart())
     event.add("dtend", event_.getEnd())
-    # event.add("dtstamp", datetime(2022, 10, 24, 0, 10, 0, tzinfo=pytz.utc))
     cal.add_component(event)
-    # print(cal.to_ical())
+
     directory = str(Path(__file__).parent.parent) + "/ical/"
-    print("ics file will be generated at ", directory)
+    # print("ics file will be generated at ", directory)
     f = open(
         os.path.join(
             directory,
             event_.getDate()
             + "_"
-            + event_.getName().replace(" ", "_").replace(",", "_")
+            + event_.getName()
+            .replace(" ", "_")
+            .replace(",", "_")
+            .replace("<br>", "_")
+            .replace(".", "_")
             + ".ics",
         ),
         "wb",
@@ -149,9 +152,20 @@ if __name__ == "__main__":
     monthInput = input("Select a month: ")
     monthInput = transform_date(monthInput)
     print(link + monthInput)
+    freeDays = []
+    while 1:
+        freeDays.append(input("When are you having free?(0 to break): "))
+        if freeDays[-1] == "0":
+            freeDays.pop()
+            break
+        if int(freeDays[-1]) < 10:
+            freeDays[-1] = "0" + freeDays[-1]
+    # print(freeDays)
     events_list = fetch_perf(link + monthInput)
     for event in events_list:
         print(event.getName(), event.getStart(), event.getEnd())
-        create_event(event)
+        # print(event.getStart().strftime("%d"))
+        if not event.getStart().strftime("%d") in freeDays:
+            create_event(event)
 
     # print(event_elements[0])
