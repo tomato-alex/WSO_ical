@@ -119,7 +119,7 @@ def fetch_perf(_link):
 
 def create_event(event_):
     cal = Calendar()
-    cal.add("attendee", "MAILTO:alex.petrov16@gmail.com")
+    cal.add("attendee", "MAILTO:xxx@gmail.com")
 
     event = Event()
     event.add("summary", "Work")
